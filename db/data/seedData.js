@@ -4,11 +4,7 @@ let colorData = [
     palettes: [
       {
         name: 'Cool Tones',
-        colors: [
-          { hex_code: '#231f20' },
-          { hex_code: '#000000' },
-          { hex_code: '#ffffff' },
-        ]
+        colors: [ '#231f20', '#000000', '#ffffff', '#dddddd', '#cccccc' ]
       }
     ]
   },

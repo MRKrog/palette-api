@@ -11,8 +11,13 @@ const createProjects = (knex, project) => {
       palettePromises.push(
         createPalettes(knex, {
           name: palette.name,
+          color_1: palette.colors[0],
+          color_2: palette.colors[1],
+          color_3: palette.colors[2],
+          color_4: palette.colors[3],
+          color_5: palette.colors[4],
           project_id: project_id[0]
-        }, palette.colors)
+        })
       )
     });
 
@@ -20,32 +25,13 @@ const createProjects = (knex, project) => {
   })
 };
 
-const createPalettes = (knex, palette, colors) => {
-  return knex('palettes').insert(palette, 'id')
-    .then(palette_id => {
-
-      let colorPromises = [];
-
-      colors.forEach(color => {
-        colorPromises.push(
-          createColors(knex, {
-            hex_code: color.hex_code,
-            palette_id: palette_id[0]
-          })
-        )
-      });
-
-      return Promise.all(colorPromises);
-    });
+const createPalettes = (knex, palette) => {
+  return knex('palettes').insert(palette)
 };
 
-const createColors = (knex, color) => {
-  return knex('colors').insert(color);
-};
 
 exports.seed = (knex, Promise) => {
-  return knex('colors').del()
-    .then(() => knex('palettes').del())
+  return knex('palettes').del()
     .then(() => knex('projects').del())
     .then(() => {
 
