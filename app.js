@@ -11,22 +11,14 @@ app.use(express.json());
 
 const paletteParameters = ['name', 'color_1', 'color_2', 'color_3', 'color_4', 'color_5', 'project_id'];
 
-// 4 GET endpoints
-  // 2 GET endpoints that serve up ALL of a single resource
-  // 2 GET endpoints that serve up a single record of a resource
-// 2 POST endpoints
-// 2 PUT/PATCH endpoints
-// 2 DELETE endpoints
-
-
 app.get('/', (req, res) => {
   res.json('Server Running!')
 });
 
 // Get All Projects
-app.get('/api/v1/projects', async (res, req) => {
+app.get('/api/v1/projects', async (req, res) => {
   try {
-    const projects = await db('projects').column(['id', 'name']).select();
+    const projects = await database('projects').column(['id', 'name']).select();
     res.status(200).json(projects);
   } catch {
     res.sendStatus(500);
@@ -38,7 +30,7 @@ app.get('/api/v1/projects', async (res, req) => {
 app.get('/api/v1/projects/:id/palettes', async (req, res) => {
   try {
     const { id: project_id } = req.params;
-    const palettes = await db('palettes')
+    const palettes = await database('palettes')
       .column(['id', ...paletteParams])
       .where({ project_id });
     if (!palettes.length) return res.sendStatus(404);
@@ -83,7 +75,7 @@ app.post('/api/v1/projects', async (req, res) => {
   try {
     const { name } = req.body;
     if (!name) return res.status(422).json('Please enter project name.');
-    const [id] = await db('projects').insert({ name }, 'id');
+    const [id] = await database('projects').insert({ name }, 'id');
     res.status(201).json({ id });
   } catch {
     res.sendStatus(500);
@@ -109,7 +101,7 @@ app.post('/api/v1/palettes', async (req, res) => {
         return res.status(422).json(message);
       }
     }
-    const [id] = await db('palettes').insert(palette, 'id');
+    const [id] = await database('palettes').insert(palette, 'id');
     res.status(201).json({ id });
   } catch {
     res.sendStatus(500);
@@ -120,12 +112,12 @@ app.post('/api/v1/palettes', async (req, res) => {
 app.delete('/api/v1/projects/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const matchingProjects = await db('projects').where({ id });
+    const matchingProjects = await database('projects').where({ id });
     if (!matchingProjects.length) return res.sendStatus(404);
-    await db('palettes')
+    await database('palettes')
       .where({ project_id: id })
       .del();
-    await db('projects')
+    await database('projects')
       .where({ id })
       .del();
     res.sendStatus(204);
@@ -138,9 +130,9 @@ app.delete('/api/v1/projects/:id', async (req, res) => {
 app.delete('/api/v1/palettes/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const matchingPalettes = await db('palettes').where({ id });
+    const matchingPalettes = await database('palettes').where({ id });
     if (!matchingPalettes.length) return res.sendStatus(404);
-    await db('palettes')
+    await database('palettes')
       .where({ id })
       .del();
     res.sendStatus(204);
@@ -154,9 +146,9 @@ app.patch('/api/v1/projects/:id', async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
     if (!name) return res.status(422).json('Please provide a name.');
-    const matchingProjects = await db('projects').where({ id });
+    const matchingProjects = await database('projects').where({ id });
     if (!matchingProjects.length) return res.sendStatus(404);
-    await db('projects')
+    await database('projects')
       .where({ id })
       .update({ name });
     res.sendStatus(202);
@@ -170,9 +162,9 @@ app.patch('/api/v1/palettes/:id', async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
     if (!name) return res.status(422).json('Please provide a name.');
-    const matchingPalettes = await db('palettes').where({ id });
+    const matchingPalettes = await database('palettes').where({ id });
     if (!matchingPalettes.length) return res.sendStatus(404);
-    await db('palettes')
+    await database('palettes')
       .where({ id })
       .update({ name });
     res.sendStatus(202);
