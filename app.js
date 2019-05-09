@@ -15,32 +15,31 @@ app.get('/', (req, res) => {
   res.json('Server Running!')
 });
 
+// Works
 // Get All Projects
 app.get('/api/v1/projects', async (req, res) => {
   try {
     const projects = await database('projects').select();
-    console.log('projects', projects);
+    if (!projects.length) return res.status(404).json('Projects Not Found');
     res.status(200).json(projects);
   } catch (err) {
     res.sendStatus(500);
   }
 });
 
-// Grab All Projects and Associated Palettes
-// Needs Work To Finish
-app.get('/api/v1/projects/:id/palettes', async (req, res) => {
+// Works
+// Grab All Palettes
+app.get('/api/v1/palettes', async (req, res) => {
   try {
-    const { id: project_id } = req.params;
-    const palettes = await database('palettes')
-      .column(['id', ...paletteParams])
-      .where({ project_id });
-    if (!palettes.length) return res.sendStatus(404);
+    const palettes = await database('palettes').select();
+    if (!palettes.length) return res.status(404).json('Palettes Not Found');
     res.status(200).json(palettes);
-  } catch {
-    res.sendStatus(500);
+  } catch (error) {
+    res.status(500).json({ error });
   }
 });
 
+// Works
 // Grab Single Project
 app.get('/api/v1/projects/:id', async (req, res) => {
  const id = parseInt(req.params.id);
@@ -56,6 +55,7 @@ app.get('/api/v1/projects/:id', async (req, res) => {
    .catch(error => res.status(500).json({ error }));
 });
 
+// Works
 // Grab Single Palette
 app.get('/api/v1/palettes/:id', (req, res) => {
   const id = parseInt(req.params.id);
@@ -71,18 +71,20 @@ app.get('/api/v1/palettes/:id', (req, res) => {
     .catch(error => res.status(500).json({ error }));
 });
 
+// Works
 // Create a new project
 app.post('/api/v1/projects', async (req, res) => {
   try {
     const { name } = req.body;
     if (!name) return res.status(422).json('Please enter project name.');
-    const [id] = await database('projects').insert({ name }, 'id');
+    const id = await database('projects').insert({ name }, 'id');
     res.status(201).json({ id });
-  } catch {
-    res.sendStatus(500);
+  } catch (error) {
+    res.status(500).json({ error });
   }
 });
 
+// Works
 // Create a new palette
 app.post('/api/v1/palettes', async (req, res) => {
   try {
@@ -109,6 +111,7 @@ app.post('/api/v1/palettes', async (req, res) => {
   }
 });
 
+// Works
 // Delete Project
 app.delete('/api/v1/projects/:id', async (req, res) => {
   try {
@@ -121,12 +124,13 @@ app.delete('/api/v1/projects/:id', async (req, res) => {
     await database('projects')
       .where({ id })
       .del();
-    res.sendStatus(204);
-  } catch {
-    res.sendStatus(500);
+    res.status(204).json('Project Deleted');
+  } catch (error) {
+    res.status(500).json({ error });
   }
 });
 
+// Works
 // Delete Palette
 app.delete('/api/v1/palettes/:id', async (req, res) => {
   try {
@@ -136,12 +140,13 @@ app.delete('/api/v1/palettes/:id', async (req, res) => {
     await database('palettes')
       .where({ id })
       .del();
-    res.sendStatus(204);
-  } catch {
-    res.sendStatus(500);
+    res.status(204).json('Palette Deleted');
+  } catch (error) {
+    res.status(500).json({ error });
   }
 });
 
+// Works
 app.patch('/api/v1/projects/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -152,25 +157,27 @@ app.patch('/api/v1/projects/:id', async (req, res) => {
     await database('projects')
       .where({ id })
       .update({ name });
-    res.sendStatus(202);
-  } catch {
-    res.sendStatus(500);
+    res.status(202).json('Name Updated Successfully');
+  } catch (error) {
+    res.status(500).json({ error });
   }
 });
 
+// Works
 app.patch('/api/v1/palettes/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
+    console.log(req.body);
     if (!name) return res.status(422).json('Please provide a name.');
     const matchingPalettes = await database('palettes').where({ id });
     if (!matchingPalettes.length) return res.sendStatus(404);
     await database('palettes')
       .where({ id })
       .update({ name });
-    res.sendStatus(202);
-  } catch {
-    res.sendStatus(500);
+    res.status(202).json('Name Updated Successfully');
+  } catch (error) {
+    res.status(500).json({ error });
   }
 });
 
