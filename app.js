@@ -18,9 +18,10 @@ app.get('/', (req, res) => {
 // Get All Projects
 app.get('/api/v1/projects', async (req, res) => {
   try {
-    const projects = await database('projects').column(['id', 'name']).select();
+    const projects = await database('projects').select();
+    console.log('projects', projects);
     res.status(200).json(projects);
-  } catch {
+  } catch (err) {
     res.sendStatus(500);
   }
 });
