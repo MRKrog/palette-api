@@ -1,9 +1,14 @@
 language: node_js
 node_js:
-  - "7"
+- '7'
 services:
-  - postgresql
+- postgresql
 before_script:
-  - psql -c "CREATE DATABASE palettedb_test;" -U postgres
-  - knex migrate:latest --env=test
-  - knex seed:run --env=test
+- psql -c "CREATE DATABASE palettedb_test;" -U postgres
+- knex migrate:latest --env=test
+- knex seed:run --env=test
+deploy:
+  app: palette-api
+  provider: heroku
+  api_key:
+    secure: DhKT43F3rMvRWHZ6VsSSmX5939ZoC33wqVUvBqdVxjRXWZrgmDePVmMEXvEtw2x+FTaa3AXgCaZwZz7MROXpDBUtpawX0zIEW1L9frWFfkDG5KituCJOktjOz9FczV8y/QQ1XXuYPNssjBprqVlEZoF2VXp++MsRtmVMlKXbptgOHm3jVy3xYc7psCzMoNQmmsEpC7mEaHs4ENDoQCpMsmymp7YjglpEaJoGCIiI7Vw+ZaR5yntKbUi7F1bmhHNe+jpARu52naRGB4yyXgyTEvvn91P4xyxdPT35vYwmYD6VDVe5qsBzJ9evRPfC2dS9+dtV2IIExEWHLLY3ZVKwo+BxbY+VPFgXSy5EJj2Gxtzk7QJ+YOZxX/yq+qQQrCrLZkvwLuj4aTlSfUC30hiMCLrTtW3a5VO4r7ewM1JSiFcZuo0c/JX4py0bLtjvhKLRLY9V52ViY7gUdr/Q0WbFk8W0GurfKNL6TW2ko+NS58c7VFI2D4CaKuQdfBlJRHYRW5mqkuC17GMyn9zmKTHFlaKrvIw8XRAjRfhhmbdj5hKrfwbaXjtzlQBeAe1SOIH2a3YJl5j0tHEWuMu1LaWfejMJS2ju4I/J5B6BrKeszASFjIm1w9FdxoMBslUZhT9S45xc9TgUMoQGGuhG9KGUWZcXWm2MO1jkqwLtwDWogF4=
