@@ -14,9 +14,9 @@ describe('api', () => {
     await database.seed.run()
   });
 
-  describe('get /concerts', () => {
+  describe('Server Running /', () => {
 
-    it('should return all concerts in the db', async () => {
+    it('should return a message if server is running', async () => {
       //
       // const expectedConcertsNumber = concerts.reduce((arr, index) => {
       //   arr += index.concerts.length;
@@ -24,12 +24,35 @@ describe('api', () => {
       // }, 0);
       //
       // // execution
-      // const response = await request(app).get('/api/v1/concerts');
-      // const result = response.body;
+      const response = await request(app).get('/');
+      const result = response.body;
       //
       // // // expectation
       // expect(response.status).toBe(200)
-      // expect(result.length).toBe(expectedConcertsNumber)
+      expect(result).toBe('Server Running!')
+    })
+
+  })
+
+  describe('GET /api/v1/projects', () => {
+
+    it('should return all projects from database', async () => {
+
+      // const expectedProjectsNumber = projects.reduce((arr, project) => {
+      //   console.log(project.length);
+      //   arr += project.length;
+      //   return arr;
+      // }, 0);
+      //
+      // console.log(expectedProjectsNumber);
+
+      // // execution
+      const response = await request(app).get('/api/v1/projects');
+      const result = response.body;
+
+      // expectation
+      expect(response.status).toBe(200)
+      expect(result.length).toBe(projects.length)
     })
 
   })

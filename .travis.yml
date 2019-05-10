@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "7"
+services:
+  - postgresql
+before_script:
+  - psql -c "CREATE DATABASE palettedb_test;" -U postgres
+  - knex migrate:latest --env=test
+  - knex seed:run --env=test
