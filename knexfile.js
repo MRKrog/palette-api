@@ -1,5 +1,4 @@
 module.exports = {
-
   development: {
     client: 'pg',
     connection: 'postgres://localhost/palettedb',
@@ -11,7 +10,6 @@ module.exports = {
     },
     useNullAsDefault: true,
   },
-
   test: {
     client: 'pg',
     connection: 'postgres://localhost/palettedb_test',

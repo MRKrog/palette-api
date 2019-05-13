@@ -15,7 +15,6 @@ app.get('/', (req, res) => {
   res.json('Server Running!')
 });
 
-// Works
 // Get All Projects
 app.get('/api/v1/projects', async (req, res) => {
   try {
@@ -27,7 +26,6 @@ app.get('/api/v1/projects', async (req, res) => {
   }
 });
 
-// Works
 // Grab All Palettes
 app.get('/api/v1/palettes', async (req, res) => {
   try {
@@ -39,7 +37,6 @@ app.get('/api/v1/palettes', async (req, res) => {
   }
 });
 
-// Works
 // Grab Single Project
 app.get('/api/v1/projects/:id', async (req, res) => {
  const id = parseInt(req.params.id);
@@ -55,7 +52,6 @@ app.get('/api/v1/projects/:id', async (req, res) => {
    .catch(error => res.status(500).json({ error }));
 });
 
-// Works
 // Grab Single Palette
 app.get('/api/v1/palettes/:id', (req, res) => {
   const id = parseInt(req.params.id);
@@ -71,7 +67,6 @@ app.get('/api/v1/palettes/:id', (req, res) => {
     .catch(error => res.status(500).json({ error }));
 });
 
-// Works
 // Create a new project
 app.post('/api/v1/projects', async (req, res) => {
   try {
@@ -84,7 +79,6 @@ app.post('/api/v1/projects', async (req, res) => {
   }
 });
 
-// Works
 // Create a new palette
 app.post('/api/v1/palettes', async (req, res) => {
   try {
@@ -111,7 +105,6 @@ app.post('/api/v1/palettes', async (req, res) => {
   }
 });
 
-// Works
 // Delete Project
 app.delete('/api/v1/projects/:id', async (req, res) => {
   try {
@@ -130,7 +123,6 @@ app.delete('/api/v1/projects/:id', async (req, res) => {
   }
 });
 
-// Works
 // Delete Palette
 app.delete('/api/v1/palettes/:id', async (req, res) => {
   try {
@@ -146,7 +138,6 @@ app.delete('/api/v1/palettes/:id', async (req, res) => {
   }
 });
 
-// Works
 app.patch('/api/v1/projects/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -163,12 +154,10 @@ app.patch('/api/v1/projects/:id', async (req, res) => {
   }
 });
 
-// Works
 app.patch('/api/v1/palettes/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
-    console.log(req.body);
     if (!name) return res.status(422).json('Please provide a name.');
     const matchingPalettes = await database('palettes').where({ id });
     if (!matchingPalettes.length) return res.sendStatus(404);
