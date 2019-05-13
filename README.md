@@ -1,200 +1,191 @@
 # Palette Picker
-This is a REST API containing over 50 Bands that will be playing concerts at Red Rocks in 2019. Users can access data for specific dates or bands that will be performing. Additionally a user can post and delete bands and concerts.
+This is a REST API with the full CRUD for making projects with a color palette array. Users can access data for specific projects and their associated color palettes.
 
 ## Make Requests
-- Use GET, POST, DELETE requests below to view, add, or delete to the API. Endpoint outlined details and how to use are below.
+- Use GET, POST, PATCH, DELETE requests below to view, add, update, or delete to the API. Endpoint outlined details and how to use are below.
 
-## Getting Started:
-The base url to make requests to the api:
-#### `https://mkbyob.herokuapp.com/`
+## Projects  
 
-## Bands  
-
-#### GET `/api/v1/bands` (All Bands)
-The response sends all the bands in the database. Each Band includes the following parameters (id, name, and genre):
+#### GET `/api/v1/projects` (All Projects)
+The response sends all the projects in the database. Each project includes the following parameters (id and name):
 
 | Name         | type      | Description                                     |
 | :------------|:----------|:------------------------------------------------|
-| id           | integer   | unique id for each band                         |
-| name         | string    | name of the band                                |
-| genre        | string    | genre / type of music for that band             |
+| id           | integer   | unique id for each project                      |
+| name         | string    | name of the project                             |
 
-Response from `https://mkbyob.herokuapp.com/api/v1/bands` example:
 ```json
 [
-    {
-        "id": 25,
-        "name": "The 1975",
-        "created_at": "2019-05-03T17:29:21.750Z",
-        "updated_at": "2019-05-03T17:29:21.750Z",
-        "genre": "Rock"
-    },
-    {
-        "id": 26,
-        "name": "Twiddle / Pigeon Playing Ping Pong",
-        "created_at": "2019-05-03T17:29:21.757Z",
-        "updated_at": "2019-05-03T17:29:21.757Z",
-        "genre": "Rock"
-    },
+  {
+      "id": 1,
+      "name": "Project One",
+      "created_at": "2019-05-09T19:43:08.350Z",
+      "updated_at": "2019-05-09T19:43:08.350Z"
+  },
+  {
+      "id": 2,
+      "name": "Project Two",
+      "created_at": "2019-05-13T19:17:43.823Z",
+      "updated_at": "2019-05-13T19:17:43.823Z"
+  }
+
 ]
 ```
 
-#### GET `/api/v1/bands/:id` (Request Single Band)
-Response will send a single band that matches the id parameter in the request
+#### GET `/api/v1/projects/:id` (Request Single Project)
+Response will send a single project that matches the id parameter in the request
 
-Response from `https://mkbyob.herokuapp.com/api/v1/bands/27` example:
 ```json
 [
     {
-        "id": 27,
-        "name": "Shpongle Live In Concert",
+        "id": 18,
+        "name": "New home project",
         "created_at": "2019-05-03T17:29:21.759Z",
         "updated_at": "2019-05-03T17:29:21.759Z",
-        "genre": "Psychedelic"
     }
 ]
 ```
 
-#### POST `/api/v1/bands` (Create New Band)
-A user can create/post a new band to the database. Below is the required parameters and an example post. (Must be formatted to JSON)
+#### POST `/api/v1/projects` (Create New Project)
+A user can create/post a new project to the database. Below is the required parameters and an example post. (Must be formatted to JSON)
 
 | Name         | type      | Description                                     |
 | :------------|:----------|:------------------------------------------------|
-| name         | string    | name of the band                                |
-| genre        | string    | genre / type of music for that band             |
+| name         | string    | name of the project                             |
 
-POST Band Example:
+POST Project Example:
 ```json
   {
-      "name": "Name of Band",
-      "genre": "Genre of Band",
+      "name": "My new home color schemes"
   }
 ```
-
-Response from `https://mkbyob.herokuapp.com/api/v1/bands` example:
 ```
- "Successfully Posted Band"
+ < new project id >
 ```
 
-#### DELETE `/api/v1/bands/:id/concerts` (Delete a specific band and associated concerts )
-A user can also delete a specific band which will also delete all associated concerts. The request parameter id must match a single band which will also delete the concerts which have a concertId that matches.
+#### DELETE `/api/v1/projects/:id` (Delete a specific project and associated palettes )
+A user can also delete a specific project which will also delete all associated palettes. The request parameter id must match a single project which will also delete the palettes which have a projectId that matches.
 
-Response from `https://mkbyob.herokuapp.com/api/v1/bands/:id/concerts` example:
 ```
- "Band and Concerts Deleted"
+ "Project deleted"
 ```
 
-## Concerts  
+#### PATCH `/api/v1/projects/:id` (Update Project Name)
+A user can update/patch an existing projects name.  The request parameter id will determine which project will be updated in the database.
 
-#### GET `/api/v1/concerts` (All Concerts)
-The response sends all the concerts in the database. Each Concert includes the following parameters (id, date, time_start, time_doors, tickets_link, and concertId):
+```
+  "Name Updated Successfully"
+```
+
+## Palettes  
+
+#### GET `/api/v1/palettes` (All Palettes)
+The response sends all the palettes in the database. Each Palette includes the following parameters (id, name, color_1, color_2, color_3, color_4, and color_5):
 
 | Name         | type      | Description                                     |
 | :------------|:----------|:------------------------------------------------|
 | id           | integer   | unique id for each concert                      |
-| date         | string    | date of concert                                 |
-| time_start   | string    | concert start time                              |
-| time_doors   | string    | concert doors open time                         |
-| tickets_link | string    | link to purchase concert tickets                |
-| concertId    | integer   | unique id for each concert to the band playing  |
+| name         | string    | name of palette                                 |
+| color_1      | string    | color 1 hex color code                          |
+| color_2      | string    | color 2 hex color code                          |
+| color_3      | string    | color 3 hex color code                          |
+| color_4      | string    | color 4 hex color code                          |
+| color_5      | string    | color 5 hex color code                          |
 
-Response from `https://mkbyob.herokuapp.com/api/v1/concerts` example:
 ```json
 [
-    {
-        "id": 25,
-        "date": "TUESDAY April 30, 2019",
-        "time_start": "7:00 PM",
-        "time_doors": "6:00 PM",
-        "tickets_link": "www.axs.com/events/363535/the-1975",
-        "created_at": "2019-05-03T17:29:21.843Z",
-        "updated_at": "2019-05-03T17:29:21.843Z",
-        "concertId": 25
-    },
-    {
-        "id": 26,
-        "date": "SUNDAY May 05, 2019",
-        "time_start": "4:00 PM",
-        "time_doors": "4:00 PM",
-        "tickets_link": "/ww.axs.com/events/363968/nght",
-        "created_at": "2019-05-03T17:29:21.843Z",
-        "updated_at": "2019-05-03T17:29:21.843Z",
-        "concertId": 29
-    },
+  {
+      "id": 3,
+      "name": "Cool Tones",
+      "color_1": "#231F20",
+      "color_2": "#000000",
+      "color_3": "#FFFFFF",
+      "color_4": "#DDDDDD",
+      "color_5": "#CCCCCC",
+      "project_id": 1,
+      "created_at": "2019-05-13T19:16:31.682Z",
+      "updated_at": "2019-05-13T19:16:31.682Z"
+  },
+  {
+      "id": 4,
+      "name": "Bedroom Colors",
+      "color_1": "#FFFFFFF",
+      "color_2": "#FFFFFFF",
+      "color_3": "#CCCCCC",
+      "color_4": "#000000",
+      "color_5": "#000000",
+      "project_id": 2,
+      "created_at": "2019-05-13T19:17:32.000Z",
+      "updated_at": "2019-05-13T19:17:32.000Z"
+  }
 ]
 ```
 
-#### GET `/api/v1/bands/:id/concerts` (Specific Concerts where a Band is playing)
-Response will send all the concerts for a specific band that matches the id parameter in the request
+#### GET `/api/v1/palettes/:id` (Request Specific Palette)
+Response will send a specific palette that matches the id parameter in the request
 
-Response from `https://mkbyob.herokuapp.com/api/v1/bands/27/concerts` example:
 ```json
 [
-    {
-        "id": 39,
-        "date": "FRIDAY May 03, 2019",
-        "time_start": "7:00 PM",
-        "time_doors": "6:30 PM",
-        "tickets_link": "www.axs.com/events/361628/shpongle-live-in-concert-tickets?skin=redrocks",
-        "created_at": "2019-05-03T17:29:21.851Z",
-        "updated_at": "2019-05-03T17:29:21.851Z",
-        "concertId": 27
-    },
-    {
-        "id": 40,
-        "date": "SATURDAY May 04, 2019",
-        "time_start": "7:00 PM",
-        "time_doors": "7:00 PM",
-        "tickets_link": "www.axs.com/events/361629/shpongle-live-in-concert-tickets?skin=redrocks",
-        "created_at": "2019-05-03T17:29:21.851Z",
-        "updated_at": "2019-05-03T17:29:21.851Z",
-        "concertId": 27
-    }
+  {
+    "id": 3,
+    "name": "Cool Tones",
+    "color_1": "#231F20",
+    "color_2": "#000000",
+    "color_3": "#FFFFFF",
+    "color_4": "#DDDDDD",
+    "color_5": "#CCCCCC",
+    "project_id": 1,
+    "created_at": "2019-05-13T19:16:31.682Z",
+    "updated_at": "2019-05-13T19:16:31.682Z"
+  }
 ]
 ```
 
-#### POST `/api/v1/bands/:id/concerts` (Create A New Concerts that is associated to a Band)
-A user can create/post a new concert to the database. This concert must match an associated bands id. This will be the request parameter id in the url provided above. Below is the required parameters and an example post. (Must be formatted to JSON)
+#### POST `/api/v1/palettes` (Create A New Palette)
+A user can create/post a new palette to the database. This concert must match an associated bands id. This will be the request parameter id in the url provided above. Below is the required parameters and an example post. (Must be formatted to JSON)
 
 | Name         | type      | Description                                     |
 | :------------|:----------|:------------------------------------------------|
-| date         | string    | date of concert                                 |
-| time_start   | string    | concert start time                              |
-| time_doors   | string    | concert doors open time                         |
-| tickets_link | string    | link to purchase concert tickets                |
+| id           | integer   | unique id for each concert                      |
+| name         | string    | name of palette                                 |
+| color_1      | string    | color 1 hex color code                          |
+| color_2      | string    | color 2 hex color code                          |
+| color_3      | string    | color 3 hex color code                          |
+| color_4      | string    | color 4 hex color code                          |
+| color_5      | string    | color 5 hex color code                          |
 
-POST Concerts Example:
+POST Palette Example:
 ```json
 {
-  "concerts": [
-    {
-      "date": "MONDAY June 10, 2019",
-      "time_start": "7:00 PM",
-      "time_doors": "6:00 PM",
-      "tickets_link": "LinkToPurchaseTickets"
-    },
-    {
-      "date": "TUESDAY June 11, 2019",
-      "time_start": "7:00 PM",
-      "time_doors": "6:00 PM",
-      "tickets_link": "LinkToPurchaseTickets"
-    }
-  ]
+    "name": "Creating New Palette",
+    "color_1": "#231F20",
+    "color_2": "#000000",
+    "color_3": "#FFFFFF",
+    "color_4": "#DDDDDD",
+    "color_5": "#CCCCCC",
+    "project_id": 1
 }
 ```
 
-Response from `/api/v1/bands/27/concerts` example:
+Response from `/api/v1/palettes` example:
 ```
- "Successfully Posted Concerts"
+ < id of created palette >
 ```
 
-#### DELETE `/api/v1/bands/:id/concerts` (Delete specific concerts )
-A user can also delete a specific concert. The request parameter id should match the id of the concert you want to delete.
+#### DELETE `/api/v1/palettes/:id` (Delete specific Palette)
+A user can also delete a specific palette. The request parameter id should match the id of the palette you want to delete.
 
-Response from `https://mkbyob.herokuapp.com/api/v1/concerts/:id` example:
 ```
- "Concert Deleted"
+ "Palette Deleted"
+```
+
+#### PATCH `/api/v1/palettes/:id` (Update Project Name)
+A user can update/patch an existing palettes name.  The request parameter id will determine which palette will be updated in the database.
+
+```
+  "Name Updated Successfully"
 ```
 
 ## Contributors
 - [Michael Krog](https://github.com/MRKrog)
+- [Isaac Sunoo](https://github.com/IsaacSunoo)
