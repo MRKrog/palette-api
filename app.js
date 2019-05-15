@@ -85,8 +85,14 @@ app.post('/api/v1/projects', async (req, res) => {
   try {
     const { name } = req.body;
     if (!name) return res.status(422).json('Please enter project name.');
-    const id = await database('projects').insert({ name }, 'id');
-    res.status(201).json({ id });
+    const projects = await database('projects').select();
+    const matchingName = projects.find(project => project.name === name);
+    if (!matchingName) {
+      const id = await database('projects').insert({ name }, 'id');
+      res.status(201).json({ id });
+    } else {
+      res.status(226).json('Project Name already exists');
+    }
   } catch (error) {
     res.status(500).json({ error });
   }
