@@ -25,6 +25,13 @@ describe('api', () => {
       expect(response.status).toEqual(200);
       expect(response.body.length).toEqual(expected.length);
     });
+
+    it('should return a single palette if the match params matches the name', async () => {
+      const expected = await database('palettes').select();
+      const response = await request(app).get('/api/v1/palettes?name=Cool%20Tones');
+      expect(response.status).toEqual(200);
+      expect(response.body.length + 1).toEqual(expected.length);
+    })
   });
 
   describe('GET /api/v1/projects/:id', () => {

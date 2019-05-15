@@ -29,9 +29,22 @@ app.get('/api/v1/projects', async (req, res) => {
 // Grab All Palettes
 app.get('/api/v1/palettes', async (req, res) => {
   try {
-    const palettes = await database('palettes').select();
-    if (!palettes.length) return res.status(404).json('Palettes Not Found');
-    res.status(200).json(palettes);
+    const { name } = req.query;
+    if (req.query.name) {
+      database('palettes')
+        .where('name', name)
+        .then(palette => {
+          if (palette) {
+            return res.status(200).json(palette);
+          } else {
+            return res.status(404).json('Palettes Not Found');
+          }
+        });
+    } else {
+      const palettes = await database('palettes').select();
+      if (!palettes.length) return res.status(404).json('Palettes Not Found');
+      res.status(200).json(palettes);
+    }
   } catch (error) {
     res.status(500).json({ error });
   }
@@ -46,7 +59,7 @@ app.get('/api/v1/projects/:id', async (req, res) => {
      if (projects.length) {
        return res.status(200).json(projects[0]);
      } else {
-       return res.sendStatus(404);
+       return res.status(404).json(`Project not found with id ${id}`);
      }
    })
    .catch(error => res.status(500).json({ error }));
@@ -61,7 +74,7 @@ app.get('/api/v1/palettes/:id', (req, res) => {
       if (palettes.length) {
         return res.status(200).json(palettes[0]);
       } else {
-        return res.sendStatus(404);
+        return res.status(404).json(`Palette Not Found with id ${id}`);
       }
     })
     .catch(error => res.status(500).json({ error }));
@@ -144,7 +157,7 @@ app.patch('/api/v1/projects/:id', async (req, res) => {
     const { name } = req.body;
     if (!name) return res.status(422).json('Please provide a name.');
     const matchingProjects = await database('projects').where({ id });
-    if (!matchingProjects.length) return res.sendStatus(404);
+    if (!matchingProjects.length) return res.status(404).json('Project not found.');
     await database('projects')
       .where({ id })
       .update({ name });
@@ -160,7 +173,7 @@ app.patch('/api/v1/palettes/:id', async (req, res) => {
     const { name } = req.body;
     if (!name) return res.status(422).json('Please provide a name.');
     const matchingPalettes = await database('palettes').where({ id });
-    if (!matchingPalettes.length) return res.sendStatus(404);
+    if (!matchingPalettes.length) return res.status(404).json('Palette not found.');
     await database('palettes')
       .where({ id })
       .update({ name });
