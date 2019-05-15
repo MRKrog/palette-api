@@ -80,7 +80,13 @@ A user can update/patch an existing projects name.  The request parameter id wil
 ## Palettes  
 
 #### GET `/api/v1/palettes` (All Palettes)
-The response sends all the palettes in the database. Each Palette includes the following parameters (id, name, color_1, color_2, color_3, color_4, and color_5):
+The response sends all the palettes in the database. Also grab a specific palette by its name by entering a query param ie.
+```
+http://localhost:3001/api/v1/palettes?name=${name of palette}
+```
+Spaces are indicated with &rightarrow; %20
+
+Each Palette includes the following parameters (id, name, color_1, color_2, color_3, color_4, and color_5):
 
 | Name         | type      | Description                                     |
 | :------------|:----------|:------------------------------------------------|
