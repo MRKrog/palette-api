@@ -1,10 +1,8 @@
 const express = require('express')
 const cors = require('cors');
-
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
-
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -15,7 +13,6 @@ app.get('/', (req, res) => {
   res.json('Server Running!')
 });
 
-// Get All Projects
 app.get('/api/v1/projects', async (req, res) => {
   try {
     const projects = await database('projects').select();
@@ -26,7 +23,6 @@ app.get('/api/v1/projects', async (req, res) => {
   }
 });
 
-// Grab All Palettes
 app.get('/api/v1/palettes', async (req, res) => {
   try {
     const { name } = req.query;
@@ -50,7 +46,6 @@ app.get('/api/v1/palettes', async (req, res) => {
   }
 });
 
-// Grab Single Project
 app.get('/api/v1/projects/:id', async (req, res) => {
  const id = parseInt(req.params.id);
  database('projects')
@@ -65,7 +60,6 @@ app.get('/api/v1/projects/:id', async (req, res) => {
    .catch(error => res.status(500).json({ error }));
 });
 
-// Grab Single Palette
 app.get('/api/v1/palettes/:id', (req, res) => {
   const id = parseInt(req.params.id);
   database('palettes')
@@ -80,7 +74,6 @@ app.get('/api/v1/palettes/:id', (req, res) => {
     .catch(error => res.status(500).json({ error }));
 });
 
-// Create a new project
 app.post('/api/v1/projects', async (req, res) => {
   try {
     const { name } = req.body;
@@ -98,7 +91,6 @@ app.post('/api/v1/projects', async (req, res) => {
   }
 });
 
-// Create a new palette
 app.post('/api/v1/palettes', async (req, res) => {
   try {
     const palette = req.body;
@@ -124,7 +116,6 @@ app.post('/api/v1/palettes', async (req, res) => {
   }
 });
 
-// Delete Project
 app.delete('/api/v1/projects/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -142,7 +133,6 @@ app.delete('/api/v1/projects/:id', async (req, res) => {
   }
 });
 
-// Delete Palette
 app.delete('/api/v1/palettes/:id', async (req, res) => {
   try {
     const { id } = req.params;
