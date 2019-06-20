@@ -3,12 +3,12 @@ let colorData = [
     name: 'Project One',
     palettes: [
       {
-        name: 'Cool Tones',
-        colors: [ '#231f20', '#000000', '#ffffff', '#dddddd', '#cccccc' ]
+        name: 'Homepage',
+        colors: [ '#F20573', '#71E74C', '#190383', '#C79F5D', '#EEC148' ]
       },
       {
-        name: 'More Test Tones',
-        colors: [ '#231f20', '#000000', '#ffffff', '#dddddd', '#cccccc' ]
+        name: 'Projects',
+        colors: [ '#8646C6', '#D5620E', '#5CDC5F', '#AB3D99', '#98585B' ]
       }
     ]
   },
